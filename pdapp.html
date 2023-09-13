@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        header{
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 18px;
+        }
+        table {
+            border-collapse: collapse;
+            width: auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        th {
+            text-align: left;
+            padding: 8px;
+            color: #fff;
+            background-color: #6c7ae0;
+            font-size: 20px;
+        }
+
+        tr {
+            box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+            height: 50px;
+        }
+
+        td {
+            text-align: left;
+            padding: 8px;
+            font-size: 20px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f6ff;
+        }
+
+        tr:hover {
+            background-color: #ececff;
+            cursor: pointer;
+        }
+
+        td {
+            box-shadow: 0 4px 2px -3px rgba(0, 0, 0, 0.15) inset;
+        }
+
+        td:first-child {
+            border-radius: 5px 0 0 5px;
+            box-shadow: 4px 4px 2px -3px rgba(0, 0, 0, 0.15) inset;
+        }
+
+        td:last-child {
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 4px 2px -3px rgba(0, 0, 0, 0.15) inset;
+        }
+
+        button.link {
+            border-color: #ff9800;
+            background: none;
+            /* color: orange; */
+            border-radius: 10px;
+        }
+        .panel {
+                display: none;
+                padding: .50em .50em;
+                margin: 0 auto;
+                text-align: center;
+                font-size: x-large;
+                background-color: #FFFFFF;
+                border: 4px solid  #6c7ae0;
+                border-radius: 8px;
+                width: fit-content;
+                box-shadow: 5px 5px 6px #999;
+        }
+        .chart_div{
+                display: none;
+                padding: .50em .50em;
+                margin: 0 auto;
+                text-align: center;
+                font-size: x-large;
+                background-color: #FFFFFF;
+                border: 4px solid  #6c7ae0;
+                border-radius: 8px;
+                width: 60%;
+                box-shadow: 5px 5px 6px #999;
+        }
+        @media print {
+            table,tr, td, tr:nth-child(even), td:first-child, td:last-child, .panel, .chart_div{
+                box-shadow: none;
+                background-color: transparent;
+            }
+            .showScoreBtn, .resetBtn, .chart_div, .myChart {
+                display: none;
+            }
+            .chart_div{
+                width: auto;
+            }
+        }
+    </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+</head>
+
+<body>
+    <header style=" text-align: center; color:  #6c7ae0; ">
+            <h1 style="text-shadow: 2px 2px 4px #6E6E6E;">Personality Inventory Scale</h1>
+    </header>
+    <table>
+        <tr>
+            <th></th>
+            <th>Questions</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>I worry all the time that I will be abandoned and left all alone
+            </td>
+            <td><input type="radio" name="Q1" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q1" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>People in my life are usually wonderful or awful, without much in between
+            </td>
+            <td><input type="radio" name="Q2" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q2" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>I'm uncertain about my life, my image, or my sexuality
+            </td>
+            <td><input type="radio" name="Q3" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q3" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>I've often done at least 2 of these: eating binges, spending sprees; impulsive sex, abusing substances,
+                shoplifting, and/or reckless driving
+            </td>
+            <td><input type="radio" name="Q4" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q4" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>I have purposely hurt myself or tried suicide more than once
+            </td>
+            <td><input type="radio" name="Q5" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q5" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>I can suddenly get depressed, anxious, or angry & continue for hours or days
+            </td>
+            <td><input type="radio" name="Q6" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q6" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>For years I've felt empty inside
+            </td>
+            <td><input type="radio" name="Q7" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q7" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>I often feel angry all the time or have tantrums or even fights
+            </td>
+            <td><input type="radio" name="Q8" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q8" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>Stress can make me feel detached, paranoid or even black out
+            </td>
+            <td><input type="radio" name="Q9" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q9" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>I have special achievements & talents but I don't get the recognition I should
+            </td>
+            <td><input type="radio" name="Q10" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q10" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>I always think of success, attractiveness, brilliance, or perfect love
+            </td>
+            <td><input type="radio" name="Q11" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q11" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>My problems are unique and can't be understood by the average person
+            </td>
+            <td><input type="radio" name="Q12" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q12" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>I don't get the admiration from others that I deserve
+            </td>
+            <td><input type="radio" name="Q13" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q13" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>I use others to get the things I need
+            </td>
+            <td><input type="radio" name="Q14" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q14" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>People don't give me the special treatment that I need and deserve
+            </td>
+            <td><input type="radio" name="Q15" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q15" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>I can't predict what people feel or what they want from me
+            </td>
+            <td><input type="radio" name="Q16" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q16" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>17</td>
+            <td>People are jealous of me and/or I'm envious of the good things others have
+            </td>
+            <td><input type="radio" name="Q17" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q17" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>18</td>
+            <td>People sometimes think I'm snobbish or arrogant
+            </td>
+            <td><input type="radio" name="Q18" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q18" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>19</td>
+            <td>I'm uncomfortable unless I'm the centre of attention
+            </td>
+            <td><input type="radio" name="Q19" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q19" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>I like to flirt in social situations
+            </td>
+            <td><input type="radio" name="Q20" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q20" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>21</td>
+            <td>My emotions change constantly--it's like being on a merry-go-round
+            </td>
+            <td><input type="radio" name="Q21" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q21" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>I often use my looks to get other people's attention
+            </td>
+            <td><input type="radio" name="Q22" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q22" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>23</td>
+            <td>I see things in the broad picture--I don't talk about all the details
+            </td>
+            <td><input type="radio" name="Q23" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q23" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>24</td>
+            <td>I express my emotions strongly and dramatically
+            </td>
+            <td><input type="radio" name="Q24" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q24" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>25</td>
+            <td>I'm easily influenced by other people or what's happening around me
+            </td>
+            <td><input type="radio" name="Q25" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q25" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>26</td>
+            <td>People often act more personal & intimate toward me than they really feel
+            </td>
+            <td><input type="radio" name="Q26" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q26" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>27</td>
+            <td>I worry about criticism, rejection, or disapproval if I'm the focus of attention
+            </td>
+            <td><input type="radio" name="Q27" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q27" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>28</td>
+            <td>I don't like to get involved with people unless I am sure I will be liked
+            </td>
+            <td><input type="radio" name="Q28" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q28" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>29</td>
+            <td>I'm cautious in relationships because I worry I'll feel ashamed or ridiculous
+            </td>
+            <td><input type="radio" name="Q29" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q29" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>30</td>
+            <td>I worry I'll be criticized or rejected in social situations
+            </td>
+            <td><input type="radio" name="Q30" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q30" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>31</td>
+            <td>I'm quiet in new social situations because I feel inadequate
+            </td>
+            <td><input type="radio" name="Q31" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q31" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>32</td>
+            <td>I usually feel socially clumsy, or unappealing, or inferior
+            </td>
+            <td><input type="radio" name="Q32" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q32" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>33</td>
+            <td>I don't like to do new or risky things because I might be embarrassed
+            </td>
+            <td><input type="radio" name="Q33" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q33" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>34</td>
+            <td>I need advice or reassurance to make everyday decisions
+            </td>
+            <td><input type="radio" name="Q34" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q34" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>35</td>
+            <td>I need others to take care of major areas of my life
+            </td>
+            <td><input type="radio" name="Q35" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q35" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>36</td>
+            <td>I worry that if I disagree with others they won't support me or like me
+            </td>
+            <td><input type="radio" name="Q36" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q36" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>37</td>
+            <td>I don't feel confident starting projects or doing things on my own
+            </td>
+            <td><input type="radio" name="Q37" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q37" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>38</td>
+            <td>I volunteer to do unpleasant things so people will like me better
+            </td>
+            <td><input type="radio" name="Q38" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q38" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>39</td>
+            <td>I feel uncomfortable or helpless when I'm alone with no one to care for me
+            </td>
+            <td><input type="radio" name="Q39" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q39" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>40</td>
+            <td>When relationships end I quickly look for someone who will care for me
+            </td>
+            <td><input type="radio" name="Q40" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q40" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>41</td>
+            <td>I always worry I'll be left alone with no one to care for me .
+            </td>
+            <td><input type="radio" name="Q41" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q41" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>42</td>
+            <td>Details, rules, order, & organization are the most important parts of a project
+            </td>
+            <td><input type="radio" name="Q42" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q42" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>43</td>
+            <td>I'm so perfectionistic I won't finish a project if my strict standards aren't met
+            </td>
+            <td><input type="radio" name="Q43" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q43" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>44</td>
+            <td>Because of my work, I don't have much time for recreation and relationships
+            </td>
+            <td><input type="radio" name="Q44" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q44" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>45</td>
+            <td>I'm more conscientious about morals, ethics, & values than most people
+            </td>
+            <td><input type="radio" name="Q45" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q45" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>46</td>
+            <td>I don't like to throw things away--I tend to save everything
+            </td>
+            <td><input type="radio" name="Q46" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q46" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>47</td>
+            <td>If people won't do things my way, I usually end up doing them myself
+            </td>
+            <td><input type="radio" name="Q47" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q47" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>48</td>
+            <td>I like to hold on to my money in case I need it later for an emergency
+            </td>
+            <td><input type="radio" name="Q48" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q48" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>49</td>
+            <td>It's important to me that things are done my way
+            </td>
+            <td><input type="radio" name="Q49" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q49" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>50</td>
+            <td>I have no close friends outside my family
+            </td>
+            <td><input type="radio" name="Q50" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q50" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>51</td>
+            <td>I don't enjoy close relationships, and I don't want to have them
+            </td>
+            <td><input type="radio" name="Q51" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q51" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>52</td>
+            <td>I am a loner--I usually choose to do things alone
+            </td>
+            <td><input type="radio" name="Q52" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q52" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>53</td>
+            <td>I have little interest in sexual relationships
+            </td>
+            <td><input type="radio" name="Q53" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q53" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>54</td>
+            <td>There aren't many things that I enjoy doing
+            </td>
+            <td><input type="radio" name="Q54" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q54" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>55</td>
+            <td>People's criticism or praise doesn't mean much to me
+            </td>
+            <td><input type="radio" name="Q55" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q55" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>56</td>
+            <td>I seldom show strong emotions on the outside
+            </td>
+            <td><input type="radio" name="Q56" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q56" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>57</td>
+            <td>People are talking about me behind my back
+            </td>
+            <td><input type="radio" name="Q57" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q57" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>58</td>
+            <td>I believe in superstitions, sixth sense, telepathy, or clairvoyance
+            </td>
+            <td><input type="radio" name="Q58" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q58" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>59</td>
+            <td>I can sometimes feel energies, forces, or beings that others cannot perceive
+            </td>
+            <td><input type="radio" name="Q59" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q59" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>60</td>
+            <td>My speech is often too complex or sophisticated for people to understand
+            </td>
+            <td><input type="radio" name="Q60" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q60" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>61</td>
+            <td>I know there are individuals who would harm me if I am not careful
+            </td>
+            <td><input type="radio" name="Q61" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q61" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>62</td>
+            <td>People think I'm eccentric in the way I dress or act
+            </td>
+            <td><input type="radio" name="Q62" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q62" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>63</td>
+            <td>I often feel uncomfortable around other people, even if I know them well
+            </td>
+            <td><input type="radio" name="Q63" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q63" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>64</td>
+            <td>I usually keep my feelings to myself
+            </td>
+            <td><input type="radio" name="Q64" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q64" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>65</td>
+            <td>I don't confide in anyone outside my family
+            </td>
+            <td><input type="radio" name="Q65" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q65" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>66</td>
+            <td>I just expect others will take advantage of me, harm me, or deceive me
+            </td>
+            <td><input type="radio" name="Q66" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q66" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>67</td>
+            <td>I question the loyalty or trustworthiness of many friends & associates
+            </td>
+            <td><input type="radio" name="Q67" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q67" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>68</td>
+            <td>If I confide in others, I worry they will use it against me
+            </td>
+            <td><input type="radio" name="Q68" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q68" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>69</td>
+            <td>People often do and say things just to insult or threaten me
+            </td>
+            <td><input type="radio" name="Q69" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q69" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>70</td>
+            <td>I never forget it if someone insults or mistreats me
+            </td>
+            <td><input type="radio" name="Q70" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q70" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>71</td>
+            <td>If my character or reputations are insulted I am quick to anger or fight back
+            </td>
+            <td><input type="radio" name="Q71" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q71" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>72</td>
+            <td>I always worried that my intimate partner(s) would be untrue
+            </td>
+            <td><input type="radio" name="Q72" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q72" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>73</td>
+            <td>I have trouble with deadlines because I procrastinate & put things off
+            </td>
+            <td><input type="radio" name="Q73" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q73" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>74</td>
+            <td>I get irritated or protest when I'm asked to do something I don't want to do
+            </td>
+            <td><input type="radio" name="Q74" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q74" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>75</td>
+            <td>I usually don't work very quickly or carefully on jobs I don't like
+            </td>
+            <td><input type="radio" name="Q75" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q75" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>76</td>
+            <td>People often try to make unreasonable demands of me
+            </td>
+            <td><input type="radio" name="Q76" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q76" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>77</td>
+            <td>I often forget dates, meetings, and deadlines
+            </td>
+            <td><input type="radio" name="Q77" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q77" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>78</td>
+            <td>I do much better work than people think
+            </td>
+            <td><input type="radio" name="Q78" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q78" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>79</td>
+            <td>I resent others' suggestions about how I could get more work done
+            </td>
+            <td><input type="radio" name="Q79" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q79" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>80</td>
+            <td>I don't see the need to help out if my group does a project I don't like
+            </td>
+            <td><input type="radio" name="Q80" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q80" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>81</td>
+            <td>I think most people in authority just don't know what they're doing.
+            </td>
+            <td><input type="radio" name="Q81" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q81" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>82</td>
+            <td>As a child, I often played hooky or ditched school
+            </td>
+            <td><input type="radio" name="Q82" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q82" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>83</td>
+            <td>As a child, I ran away from home twice or more
+            </td>
+            <td><input type="radio" name="Q83" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q83" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>84</td>
+            <td>As a child, I often stayed out late at night, despite what my parents told me
+            </td>
+            <td><input type="radio" name="Q84" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q84" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>85</td>
+            <td>As a teen, I damaged other people's things on purpose
+            </td>
+            <td><input type="radio" name="Q85" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q85" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>86</td>
+            <td>As a teen, I burned others' property on purpose
+            </td>
+            <td><input type="radio" name="Q86" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q86" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>87</td>
+            <td>As a teen, I stole money or things from people
+            </td>
+            <td><input type="radio" name="Q87" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q87" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>88</td>
+            <td>As a teen, I entered locked buildings or cars without permission
+            </td>
+            <td><input type="radio" name="Q88" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q88" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>89</td>
+            <td>As a teen, I caused animals physical pain on purpose
+            </td>
+            <td><input type="radio" name="Q89" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q89" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>90</td>
+            <td>As a teen, I sometimes shoplifted when no one was looking
+            </td>
+            <td><input type="radio" name="Q90" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q90" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>91</td>
+            <td>As a teen, I caused people physical pain against their will
+            </td>
+            <td><input type="radio" name="Q91" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q91" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>92</td>
+            <td>As a teen, I had sex with a partner who didn't want to
+            </td>
+            <td><input type="radio" name="Q92" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q92" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>93</td>
+            <td>As a teen, I often needed to be intimidating or threatening
+            </td>
+            <td><input type="radio" name="Q93" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q93" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>94</td>
+            <td>As a teen, I threatened or hit someone with an object
+            </td>
+            <td><input type="radio" name="Q94" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q94" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>95</td>
+            <td>As a teen, I often started physical fights with others
+            </td>
+            <td><input type="radio" name="Q95" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q95" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>96</td>
+            <td>As a teen, I often lied or conned others for money, fun, or to avoid trouble
+            </td>
+            <td><input type="radio" name="Q96" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q96" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>97</td>
+            <td>As an adult, I've often been in physical fights with others
+            </td>
+            <td><input type="radio" name="Q97" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q97" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>98</td>
+            <td>As an adult, I've often lied or conned others for money, fun or to avoid trouble
+            </td>
+            <td><input type="radio" name="Q98" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q98" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>99</td>
+            <td>In the past, I have often acted impulsively or failed to plan ahead in my life
+            </td>
+            <td><input type="radio" name="Q99" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q99" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>100</td>
+            <td>I don't worry much about my safety or the safety of others
+            </td>
+            <td><input type="radio" name="Q100" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q100" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>101</td>
+            <td>I've often been out of work or let my bills slide without paying them on time
+            </td>
+            <td><input type="radio" name="Q101" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q101" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>102</td>
+            <td>I don't ever need to apologize or beg the pardon of anyone
+            </td>
+            <td><input type="radio" name="Q102" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q102" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+        <tr>
+            <td>103</td>
+            <td>I have been charged with a crime or arrested more than once </td>
+            <td><input type="radio" name="Q103" value="1" onclick="updateScore(name, value)">True</td>
+            <td><input type="radio" name="Q103" value="0" onclick="updateScore(name, value)">False</td>
+        </tr>
+    </table>
+    <br>
+    <div class="showScoreBtn"; style="text-align: center">
+        <label style="font-size:larger;"><span><button style="margin-left: 10px; font-size: medium;" id="showScore"
+                    >Show Score</button></span></label>
+    </div>
+    <br>
+    <div class="resetBtn" style="text-align: center">
+      <button type="reset" id="reset" onclick="window.location.reload()" style="font-size: medium;" >Reset</button>
+    </div>
+    <br>
+    <div class="panel" id="panel">
+        <p></p>
+    </div>
+    <br>
+    <div class="chart_div" id="chart_div"><canvas id="myChart"; class="myChart"></canvas></div>
+
+<script>
+        var scoreDict = {
+            Q1: null, Q2: null, Q3: null, Q4: null, Q5: null, Q6: null, Q7: null,
+            Q8: null, Q9: null, Q10: null, Q11: null, Q12: null, Q13: null, Q14: null, Q15: null, Q16: null, Q17: null, Q18: null,
+            Q19: null, Q20: null, Q21: null, Q22: null, Q23: null, Q24: null, Q25: null, Q26: null, Q27: null, Q28: null, Q29: null,
+            Q30: null, Q31: null, Q32: null, Q33: null, Q34: null, Q35: null, Q36: null, Q37: null, Q38: null, Q39: null, Q40: null,
+            Q41: null, Q42: null, Q43: null, Q44: null, Q45: null, Q46: null, Q47: null, Q48: null, Q49: null, Q50: null,
+            Q51: null, Q52: null, Q53: null, Q54: null, Q55: null, Q56: null, Q57: null, Q58: null, Q59: null, Q60: null, Q61: null,
+            Q62: null, Q63: null, Q64: null, Q65: null, Q66: null, Q67: null, Q68: null, Q69: null, Q70: null, Q71: null, Q72: null,
+            Q73: null, Q74: null, Q75: null, Q76: null, Q77: null, Q78: null, Q79: null, Q80: null, Q81: null, Q82: null, Q83: null,
+            Q84: null, Q85: null, Q86: null, Q87: null, Q88: null, Q89: null, Q90: null, Q91: null, Q92: null, Q93: null, Q94: null,
+            Q95: null, Q96: null, Q97: null, Q98: null, Q99: null, Q100: null, Q101: null, Q102: null, Q103: null
+        };
+
+        var bordPDScore = 0;
+        var narsPDScore = 0;
+        var histPDScore = 0;
+        var avoiPDScore = 0;
+        var depPDScore = 0;
+        var ocPDScore = 0;
+        var schzPDScore = 0;
+        var sztyPDScore = 0;
+        var paraPDScore = 0;
+        var pasagPDScore = 0;
+        var condPDScore = 0;
+        var antisPDScore = 0;
+
+        var finalScoreSorted = [];
+
+        function updateScore(name, value) {
+            panel.innerHTML = null;
+            panel.style = "display: none";
+            chart_div.style = "display: none";
+            this.scoreDict[name] = Number(value);
+            var totScore = 0;
+
+            for (var key in this.scoreDict) {
+                if (this.scoreDict.hasOwnProperty(key)) {
+                    totScore += this.scoreDict[key];
+                }
+            }
+
+            var bordPdScore = 0;
+            var narsPdScore = 0;
+            var histPdScore = 0;
+            var avoiPdScore = 0;
+            var depPdScore = 0;
+            var ocPdScore = 0;
+            var schzPdScore = 0;
+            var sztyPdScore = 0;
+            var paraPdScore = 0;
+            var pasagPdScore = 0;
+            var condPdScore = 0;
+            var antisPdScore = 0;
+            for (i = 1; i < 104; i++) {
+                var keyName = "Q" + i;
+                if (i >= 1 && i <= 9) {
+                    bordPdScore += scoreDict[keyName];
+                }
+                else if (i >= 10 && i <= 18) {
+                    narsPdScore += scoreDict[keyName];
+                }
+                else if (i >= 19 && i <= 26) {
+                    histPdScore += scoreDict[keyName];
+                }
+                else if (i >= 27 && i <= 33) {
+                    avoiPdScore += scoreDict[keyName];
+                }
+                else if (i >= 34 && i <= 41) {
+                    depPdScore += scoreDict[keyName];
+                }
+                else if (i >= 42 && i <= 49) {
+                    ocPdScore += scoreDict[keyName];
+                }
+                else if (i >= 50 && i <= 56) {
+                    schzPdScore += scoreDict[keyName];
+                }
+                else if (i >= 57 && i <= 65) {
+                    sztyPdScore += scoreDict[keyName];
+                }
+                else if (i >= 66 && i <= 72) {
+                    paraPdScore += scoreDict[keyName];
+                }
+                else if (i >= 73 && i <= 81) {
+                    pasagPdScore += scoreDict[keyName];
+                }
+                else if (i >= 82 && i <= 96) {
+                    condPdScore += scoreDict[keyName];
+                }
+                else if (i >= 97 && i <= 103) {
+                    antisPdScore += scoreDict[keyName];
+                }
+            }
+            bordPDScore = bordPdScore;
+            narsPDScore = narsPdScore;
+            histPDScore = histPdScore;
+            avoiPDScore = avoiPdScore;
+            depPDScore = depPdScore;
+            ocPDScore = ocPdScore;
+            schzPDScore = schzPdScore;
+            sztyPDScore = sztyPdScore;
+            paraPDScore  = paraPdScore;
+            pasagPDScore = pasagPdScore;
+            condPDScore = condPdScore;
+            antisPDScore = antisPdScore;
+
+        }
+
+        function showResponse() {
+            var finalScore = {"Borderline PD": bordPDScore, 
+                "Narcississtic PD": narsPDScore, "Histrionic PD": histPDScore, 
+                "Avoidant PD": avoiPDScore, "Dependant PD": depPDScore,
+                "Obsessive-Compulsive PD": ocPDScore, "Schizoid PD": schzPDScore,
+                "Schizotypal PD": sztyPDScore, "Paranoid PD": paraPDScore,
+                "Passive Aggressive PD": pasagPDScore, "Conduct disorder": condPDScore,
+                "Antisocial PD": antisPDScore };
+            result = JSON.stringify(finalScore)
+            var result3 = result.toString().replace(/"|[{}]|,/g, "");
+            var sortable = [];
+            for (var pd in finalScore) {
+                sortable.push([pd, finalScore[pd]]);
+            }
+            var sorted = sortable.sort(function(a, b) {
+                return b[1] - a[1];
+            });
+            finalScoreSorted = sorted
+            finalScoreStr = "<u>PD Scores</u><br>" + sorted.join("<br>").replace(/,/g, ": ");
+            panel.innerHTML = finalScoreStr
+            panel.style = "display: block";
+
+            var pdArr = [];
+            var scoreArr = [];
+            for ( i=0; i<finalScoreSorted.length; i++ ){
+                    pdArr.push(finalScoreSorted[i][0]);
+                    scoreArr.push(finalScoreSorted[i][1])          
+            }
+            chart_div.style = "display: block";
+            var myChart = new Chart(document.getElementById("myChart"), {
+                type: 'horizontalBar',
+                plugins: [ChartDataLabels],
+                data: {
+                  labels: pdArr,
+                  datasets: [
+                    {
+                      label: "PD Score",
+                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd","#8e5ea2"],
+                      data: scoreArr
+                    }
+                  ]
+                },
+                options: {
+                  legend: { display: false },
+                  title: {
+                    display: true,
+                    text: 'PD Score'
+                  },
+                  plugins: {
+                        datalabels: {
+                            color: '#ffffff',
+                            display: true
+                        }
+                    }
+                }
+        });
+
+        }
+        
+        Chart.scaleService.updateScaleDefaults('linear', {
+            ticks: {
+                min: 0,
+                stepSize: 1
+            }
+        });
+        
+        document.getElementById("showScore").addEventListener("click", function(){
+            showResponse();
+        });
+
+    </script>
+</body>
+
+</html>
+
